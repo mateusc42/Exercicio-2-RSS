@@ -28,6 +28,7 @@ import java.net.URL;
 import java.util.List;
 
 import br.ufpe.cin.if1001.rss.R;
+import br.ufpe.cin.if1001.rss.db.RssProviderContract;
 import br.ufpe.cin.if1001.rss.db.SQLiteRSSHelper;
 import br.ufpe.cin.if1001.rss.domain.ItemRSS;
 import br.ufpe.cin.if1001.rss.util.ParserRSS;
@@ -74,6 +75,13 @@ public class MainActivity extends Activity {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 SimpleCursorAdapter adapter = (SimpleCursorAdapter) parent.getAdapter();
                 Cursor mCursor = ((Cursor) adapter.getItem(position));
+                db.markAsRead(mCursor.getString(mCursor.getColumnIndexOrThrow(RssProviderContract.LINK)));
+                Intent seeOnBrowser = new Intent(Intent.ACTION_VIEW);
+                Uri itemUrl = Uri.parse(mCursor.getString(mCursor.getColumnIndexOrThrow(RssProviderContract.LINK)));
+                seeOnBrowser.setData(itemUrl);
+                if (seeOnBrowser.resolveActivity(getPackageManager()) != null) {
+                    startActivity(seeOnBrowser);
+                }
             }
         });
     }

@@ -6,6 +6,8 @@ import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.os.AsyncTask;
+import android.util.Log;
 
 import br.ufpe.cin.if1001.rss.domain.ItemRSS;
 
@@ -70,24 +72,57 @@ public class SQLiteRSSHelper extends SQLiteOpenHelper {
 
 	//IMPLEMENTAR ABAIXO
     //Implemente a manipulação de dados nos métodos auxiliares para não ficar criando consultas manualmente
+
     public long insertItem(ItemRSS item) {
         return insertItem(item.getTitle(),item.getPubDate(),item.getDescription(),item.getLink());
     }
+
     public long insertItem(String title, String pubDate, String description, String link) {
-        return 0.0;
+
+        ContentValues itemRssCV = new ContentValues();
+        itemRssCV.put(ITEM_TITLE, title);
+        itemRssCV.put(ITEM_DESC, description);
+        itemRssCV.put(ITEM_LINK, link);
+        itemRssCV.put(ITEM_DATE, pubDate);
+        itemRssCV.put(ITEM_UNREAD, 1);
+
+        SQLiteDatabase writableDB = db.getWritableDatabase();
+
+        return writableDB.insert(DATABASE_TABLE, null, itemRssCV);
     }
-    public ItemRSS getItemRSS(String link) throws SQLException {
-        return new ItemRSS("FALTA IMPLEMENTAR","FALTA IMPLEMENTAR","2018-04-09","FALTA IMPLEMENTAR");
-    }
+
     public Cursor getItems() throws SQLException {
+        SQLiteDatabase readableDB = db.getReadableDatabase();
+        Cursor query = readableDB.query(DATABASE_TABLE, columns, ITEM_UNREAD + " = 1", null, null, null, ITEM_DATE);
+        return query;
+    }
+
+    public ItemRSS getItemRSS(String link) throws SQLException {
+        SQLiteDatabase readableDB = db.getReadableDatabase();
+        Cursor query = readableDB.query(DATABASE_TABLE, columns, ITEM_LINK + "=?", new String[]{link}, null, null, ITEM_DATE);
+        if (query.getCount() > 0) {
+            query.moveToFirst();
+            ItemRSS i = new ItemRSS(query.getString(query.getColumnIndexOrThrow(ITEM_TITLE)),
+                    query.getString(query.getColumnIndexOrThrow(ITEM_LINK)),
+                    query.getString(query.getColumnIndexOrThrow(ITEM_DATE)),
+                    query.getString(query.getColumnIndexOrThrow(ITEM_DESC)));
+
+            return i;
+        }
         return null;
     }
+
     public boolean markAsUnread(String link) {
         return false;
     }
 
     public boolean markAsRead(String link) {
-        return false;
+        SQLiteDatabase writableDB = db.getWritableDatabase();
+        ContentValues itemRssCV = new ContentValues();
+        itemRssCV.put(ITEM_UNREAD, 0);
+        int hasUpdated = writableDB.update(DATABASE_TABLE, itemRssCV, ITEM_LINK + " = ?", new String[]{link});
+        if (hasUpdated == 1) { return true; } 
+        else { return false; }
     }
 
 }
