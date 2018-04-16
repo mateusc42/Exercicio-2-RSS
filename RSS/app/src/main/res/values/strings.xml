@@ -1,4 +1,13 @@
 <resources>
     <string name="app_name">RSS</string>
     <string name="rssfeed">http://g1.globo.com/dynamo/brasil/rss2.xml</string>
+    <string name="defaultRefreshTime">3h</string>
+    <string-array name="feed_refresh_time">
+        <item>30min</item>
+        <item>1h</item>
+        <item>3h</item>
+        <item>6h</item>
+        <item>12h</item>
+        <item>24h</item>
+    </string-array>
 </resources>

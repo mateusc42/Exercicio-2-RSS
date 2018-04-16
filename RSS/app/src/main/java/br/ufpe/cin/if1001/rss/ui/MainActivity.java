@@ -22,21 +22,10 @@ import android.widget.ListView;
 import android.widget.SimpleCursorAdapter;
 import android.widget.Toast;
 
-import org.xmlpull.v1.XmlPullParserException;
-
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.net.HttpURLConnection;
-import java.net.URL;
-import java.util.List;
-
 import br.ufpe.cin.if1001.rss.R;
 import br.ufpe.cin.if1001.rss.db.RssProviderContract;
 import br.ufpe.cin.if1001.rss.db.SQLiteRSSHelper;
-import br.ufpe.cin.if1001.rss.domain.ItemRSS;
 import br.ufpe.cin.if1001.rss.services.DownloadXmlService;
-import br.ufpe.cin.if1001.rss.util.ParserRSS;
 
 public class MainActivity extends Activity {
 

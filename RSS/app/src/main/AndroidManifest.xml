@@ -12,6 +12,14 @@
         android:theme="@style/AppTheme">
         <service android:name=".services.DownloadXmlService"
                  android:enabled="true"/>
+        <receiver
+            android:name=".receivers.NewReportsReceiver"
+            android:enabled="true"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="br.ufpe.cin.if1001.rss.NEW_REPORTS" />
+            </intent-filter>
+        </receiver>
         <activity android:name=".ui.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

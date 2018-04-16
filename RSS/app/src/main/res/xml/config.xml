@@ -11,5 +11,12 @@
             android:dialogMessage="Digite o link"
             android:positiveButtonText="Salvar"
             android:negativeButtonText="Cancelar" />
+        <ListPreference
+            android:defaultValue="@string/defaultRefreshTime"
+            android:title="Tempo de recarregamento das notícias"
+            android:key="rssrefreshtime"
+            android:entries="@array/feed_refresh_time"
+            android:entryValues="@array/feed_refresh_time"
+            />
     </PreferenceCategory>
 </PreferenceScreen>
