@@ -40,4 +40,4 @@ Para entregar o exercício, responda o [formulário de entrega](https://docs.goo
 | 14 | **sim** |
 | 15 | **sim** |
 | 16 | **sim** |
-| 17 | **não** |
+| 17 | **sim** |
